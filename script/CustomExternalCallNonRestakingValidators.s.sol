@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.0 <0.9.0;
 
-import { Script } from "forge-std/Script.sol";
-import { stdJson } from "forge-std/StdJson.sol";
-import { console } from "forge-std/console.sol";
+import {Script} from "forge-std/Script.sol";
+import {stdJson} from "forge-std/StdJson.sol";
+import {console} from "forge-std/console.sol";
 
 interface IInstitutionalVault {
     function customExternalCall(address target, bytes calldata data, uint256 amount) external payable;
@@ -72,7 +72,9 @@ contract CustomExternalCallNonRestakingValidators is Script {
             );
 
             // TODO: Custom external call directly to the beacon deposit contract
-            IInstitutionalVault(institutionalVaultProxy).customExternalCall(0x00000000219ab540356cBB839Cbe05303d7705Fa, data, amount);
+            IInstitutionalVault(institutionalVaultProxy).customExternalCall(
+                0x00000000219ab540356cBB839Cbe05303d7705Fa, data, amount
+            );
         }
 
         vm.stopBroadcast();
