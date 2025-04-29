@@ -18,7 +18,7 @@ interface IBeaconDepositContract {
     ) external payable;
 }
 
-// forge script script/CustomExternalCallNonRestakingValidators.s.sol:CustomExternalCallNonRestakingValidators --rpc-url=$HOLESKY_RPC_URL --account institutional-deployer-testnet -vvvv --sig "run(address,string)" 0x205A6BCF458a40E1a30a000166c793Ec54b0d9D5 1
+// forge script script/CustomExternalCallNonRestakingValidators.s.sol:CustomExternalCallNonRestakingValidators --rpc-url=$HOLESKY_RPC_URL --account institutional-deployer-testnet -vvvv --sig "run(address,string)" 0x205A6BCF458a40E1a30a000166c793Ec54b0d9D5 example
 // add --broadcast to broadcast the transaction
 contract CustomExternalCallNonRestakingValidators is Script {
     using stdJson for string;

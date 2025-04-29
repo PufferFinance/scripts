@@ -6,7 +6,7 @@ import {stdJson} from "forge-std/StdJson.sol";
 import {console} from "forge-std/console.sol";
 
 interface IInstitutionalVault {
-    function startNonRestakingValidators(
+    function startRestakingValidators(
         bytes[] calldata pubKeys,
         bytes[] calldata signatures,
         bytes32[] calldata depositDataRoots
@@ -15,7 +15,7 @@ interface IInstitutionalVault {
 
 // forge script script/StartRestakingValidators.s.sol:StartRestakingValidators --rpc-url=$HOLESKY_RPC_URL --account institutional-deployer-testnet -vvvv --sig "run(address,string)" 0x205A6BCF458a40E1a30a000166c793Ec54b0d9D5 example
 // add --broadcast to broadcast the transaction
-contract StartNoRestakingValidators is Script {
+contract StartRestakingValidators is Script {
     using stdJson for string;
 
     // Expected file to have the format of test/validator-keys/no_restaking_validator_keys_holesky/deposit_data-1736424571.json
@@ -42,7 +42,8 @@ contract StartNoRestakingValidators is Script {
         vm.startBroadcast();
 
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/validator_deposit_data/0x01/", depositFileName, ".json");
+        string memory path =
+            string.concat(root, "/validator_deposit_data/restaking_validators/", depositFileName, ".json");
 
         console.log("Path:", path);
 
@@ -61,7 +62,7 @@ contract StartNoRestakingValidators is Script {
             depositDataRoots[i] = vm.parseBytes32(depositData[i].deposit_data_root);
         }
 
-        IInstitutionalVault(institutionalVaultProxy).startNonRestakingValidators(pubKeys, signatures, depositDataRoots);
+        IInstitutionalVault(institutionalVaultProxy).startRestakingValidators(pubKeys, signatures, depositDataRoots);
 
         vm.stopBroadcast();
     }
