@@ -1,0 +1,24 @@
+[
+    {
+        "pubkey": "8a72f5d0388922ba7c07ac1afa5ba8a95557823793956632aab4d143cce621d5d338d143aa8842cf91042e12a1f76a8e",
+        "withdrawal_credentials": "0200000000000000000000006600132200559d6b02e7d2fdcc865faeb6e96ec7",
+        "amount": 32000000000,
+        "signature": "a70fb9669c48d74331ef98ff125879be779ef08cdfd6bd85caffbf9ca0bfb2e528a93dcd649fe9dc812fcf102abbb1fb06d1f8fe9a60de0564e0bca17818b7e2c77f11268b17dcc0434774867174157c16ed45c1ae7095373d48ccf1b3a5084c",
+        "deposit_message_root": "49d9715168d79cc33c0264c2d10c05fc359b17405c412cf66ddcb83d0134a399",
+        "deposit_data_root": "fe6ea9840a5bd6094e39c003f6c6268ef53c1652b30360f667b6cedbe3efe2f4",
+        "fork_version": "10000910",
+        "network_name": "hoodi",
+        "deposit_cli_version": "1.2.2"
+    },
+    {
+        "pubkey": "8ea3270ba3ea4311f7e10c8e415f283c553e9b7871584ed9a2c99584999315ab83476252c620f36e4c3500f726b3329f",
+        "withdrawal_credentials": "0200000000000000000000006600132200559d6b02e7d2fdcc865faeb6e96ec7",
+        "amount": 32000000000,
+        "signature": "b7815c0d75a8e707cca1b53fdd04347c09bfcae03d44f6dc80706782af2f0b482e0bff21ffe818de9b1b9dc8c3e8402104cc6dfea8dd0c25fce7e01d490543fb4106b669fcf47a77ef0e75ef5d1dd588b54b469f5ae446a3d32ddff9c9c881d3",
+        "deposit_message_root": "136fb5f22bc733ed51c5aecdc5a2c83128dd39be384732f475700a707f88ad09",
+        "deposit_data_root": "01a955c99e2ac5a42c5d646e6fa5086df2c2492ea37da47b3c540d4705f5c345",
+        "fork_version": "10000910",
+        "network_name": "hoodi",
+        "deposit_cli_version": "1.2.2"
+    }
+]

@@ -1,0 +1,13 @@
+[
+    {
+        "pubkey": "b5d4f1fc74ff5a1dace70de3b6316d9b0de067bf7011173bb7305221577ceb6fd5a074aad29dd9580870397cf32c52f8",
+        "withdrawal_credentials": "02000000000000000000000032507ee12d6d6bc170cc98feaaa60b9ed661f135",
+        "amount": 40000000000,
+        "signature": "9551c3c20c870d179a257c1a70aba60b05a44c7f08ae4f06386e87753027862e3b9013c9ff1f976d9813dc5826f20a73098e7178cdf39eefe413ca38630b23e4d2a5b37ff6d0694609fb71f9caddcd969ae74ccdb4c6dd7020c7fb9852b3c9f4",
+        "deposit_message_root": "292b20c2bad2b61ea79ef4aa3bd9f30f87a4c29331c16e7345679d4c11bacdad",
+        "deposit_data_root": "6e6a18befb69af1debadcac5e6433816da7071d6454dfbbebaee6df8627dc9a7",
+        "fork_version": "10000910",
+        "network_name": "hoodi",
+        "deposit_cli_version": "1.2.2"
+    }
+]
