@@ -9,11 +9,12 @@ interface IInstitutionalVault {
     function startNonRestakingValidators(
         bytes[] calldata pubKeys,
         bytes[] calldata signatures,
+        uint256[] calldata amountsInGwei,
         bytes32[] calldata depositDataRoots
     ) external;
 }
 
-// forge script script/StartRestakingValidators.s.sol:StartRestakingValidators --rpc-url=$HOLESKY_RPC_URL --account institutional-deployer-testnet -vvvv --sig "run(address,string)" 0x205A6BCF458a40E1a30a000166c793Ec54b0d9D5 example
+// forge script script/StartNoRestakingValidators.s.sol:StartNoRestakingValidators --rpc-url=$HOLESKY_RPC_URL --account institutional-deployer-testnet -vvvv --sig "run(address,string)" 0x205A6BCF458a40E1a30a000166c793Ec54b0d9D5 example
 // add --broadcast to broadcast the transaction
 contract StartNoRestakingValidators is Script {
     using stdJson for string;
@@ -42,7 +43,7 @@ contract StartNoRestakingValidators is Script {
         vm.startBroadcast();
 
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/validator_deposit_data/0x01/", depositFileName, ".json");
+        string memory path = string.concat(root, "/validator_deposit_data/0x02/", depositFileName, ".json");
 
         console.log("Path:", path);
 
@@ -54,14 +55,16 @@ contract StartNoRestakingValidators is Script {
         bytes[] memory pubKeys = new bytes[](depositData.length);
         bytes[] memory signatures = new bytes[](depositData.length);
         bytes32[] memory depositDataRoots = new bytes32[](depositData.length);
+        uint256[] memory amountsInGwei = new uint256[](depositData.length);
 
         for (uint256 i = 0; i < depositData.length; i++) {
             pubKeys[i] = vm.parseBytes(depositData[i].pubkey);
+            amountsInGwei[i] = depositData[i].amount;
             signatures[i] = vm.parseBytes(depositData[i].signature);
             depositDataRoots[i] = vm.parseBytes32(depositData[i].deposit_data_root);
         }
 
-        IInstitutionalVault(institutionalVaultProxy).startNonRestakingValidators(pubKeys, signatures, depositDataRoots);
+        IInstitutionalVault(institutionalVaultProxy).startNonRestakingValidators(pubKeys, signatures, amountsInGwei, depositDataRoots);
 
         vm.stopBroadcast();
     }
