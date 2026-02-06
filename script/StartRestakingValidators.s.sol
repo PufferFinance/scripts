@@ -9,6 +9,7 @@ interface IInstitutionalVault {
     function startRestakingValidators(
         bytes[] calldata pubKeys,
         bytes[] calldata signatures,
+        uint256[] calldata amountsInGwei,
         bytes32[] calldata depositDataRoots
     ) external;
 }
@@ -55,14 +56,16 @@ contract StartRestakingValidators is Script {
         bytes[] memory pubKeys = new bytes[](depositData.length);
         bytes[] memory signatures = new bytes[](depositData.length);
         bytes32[] memory depositDataRoots = new bytes32[](depositData.length);
+        uint256[] memory amountsInGwei = new uint256[](depositData.length);
 
         for (uint256 i = 0; i < depositData.length; i++) {
             pubKeys[i] = vm.parseBytes(depositData[i].pubkey);
+            amountsInGwei[i] = depositData[i].amount;
             signatures[i] = vm.parseBytes(depositData[i].signature);
             depositDataRoots[i] = vm.parseBytes32(depositData[i].deposit_data_root);
         }
 
-        IInstitutionalVault(institutionalVaultProxy).startRestakingValidators(pubKeys, signatures, depositDataRoots);
+        IInstitutionalVault(institutionalVaultProxy).startRestakingValidators(pubKeys, signatures, amountsInGwei, depositDataRoots);
 
         vm.stopBroadcast();
     }
