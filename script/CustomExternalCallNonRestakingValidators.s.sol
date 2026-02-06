@@ -18,8 +18,8 @@ interface IBeaconDepositContract {
     ) external payable;
 }
 
-// forge script script/CustomExternalCallNonRestakingValidators.s.sol:CustomExternalCallNonRestakingValidators --rpc-url=$HOLESKY_RPC_URL --account institutional-deployer-testnet -vvvv --sig "run(address,string)" 0x205A6BCF458a40E1a30a000166c793Ec54b0d9D5 example
-// add --broadcast to broadcast the transaction
+// forge script script/CustomExternalCallNonRestakingValidators.s.sol:CustomExternalCallNonRestakingValidators --rpc-url=$HOLESKY_RPC_URL --account institutional-deployer-testnet -vvvv --sig "run(string)" depositfilename
+// This script assumes that the calldata will be executed on mainnet, so the beacon deposit contract address is hardcoded
 contract CustomExternalCallNonRestakingValidators is Script {
     using stdJson for string;
 
@@ -42,22 +42,35 @@ contract CustomExternalCallNonRestakingValidators is Script {
         string withdrawal_credentials;
     }
 
+    struct RolesConfiguration {
+        address admin;
+        address[] customExternalCallers;
+        address pufferOpsMultisig;
+        address vault;
+        address withdrawalManager;
+    }
+
     bytes pubKey;
     bytes withdrawalCredentials;
     bytes signature;
     bytes32 depositDataRoot;
     uint256 amount;
 
-    function run(address payable institutionalVaultProxy, string calldata depositFileName) public {
-        vm.startBroadcast();
+    function run(string calldata depositFileName) public {
+        // vm.startBroadcast();
 
         string memory root = vm.projectRoot();
         string memory path = string.concat(root, "/validator_deposit_data/0x02/", depositFileName, ".json");
+        string memory rolesConfigurationPath = string.concat(root, "/roles-configuration.json");
 
         console.log("Path:", path);
+        console.log("Roles configuration path:", rolesConfigurationPath);
 
         string memory fileContent = vm.readFile(path);
         bytes memory rawJson = vm.parseJson(fileContent);
+
+        RolesConfiguration memory accessManagerConfiguration =
+            abi.decode(vm.parseJson(vm.readFile(rolesConfigurationPath)), (RolesConfiguration));
 
         ValidatorDepositData[] memory depositData = abi.decode(rawJson, (ValidatorDepositData[]));
 
@@ -71,12 +84,22 @@ contract CustomExternalCallNonRestakingValidators is Script {
                 IBeaconDepositContract.deposit, (pubKey, withdrawalCredentials, signature, depositDataRoot)
             );
 
-            // TODO: Custom external call directly to the beacon deposit contract
-            IInstitutionalVault(institutionalVaultProxy).customExternalCall(
-                0x00000000219ab540356cBB839Cbe05303d7705Fa, data, amount
+            bytes memory customExternalCallData = abi.encodeCall(
+                IInstitutionalVault.customExternalCall,
+                // Hardcoded the beacon deposit contract address
+                (0x00000000219ab540356cBB839Cbe05303d7705Fa, data, amount)
             );
+
+            console.log("Custom external call to the beacon deposit contract");
+            console.log("Vault:", accessManagerConfiguration.vault);
+            console.logBytes(customExternalCallData);
+
+            // TODO: Custom external call directly to the beacon deposit contract
+            // IInstitutionalVault(institutionalVaultProxy).customExternalCall(
+            //     accessManagerConfiguration.vault, data, amount
+            // );
         }
 
-        vm.stopBroadcast();
+        // vm.stopBroadcast();
     }
 }

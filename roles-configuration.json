@@ -1,0 +1,10 @@
+{
+    "admin": "0xDE2974737dcE6FCce14924C87506b6249E3Bf189",
+    "customExternalCallers": [
+        "0xC0896ab1A8cae8c2C1d27d011eb955Cca955580d",
+        "0xDE2974737dcE6FCce14924C87506b6249E3Bf189"
+    ],
+    "pufferOpsMultisig": "0xC0896ab1A8cae8c2C1d27d011eb955Cca955580d",
+    "vault": "0x2ce0b4c55be864c9c5dfc71bcd522dec9378f368",
+    "withdrawalManager": "0xDE2974737dcE6FCce14924C87506b6249E3Bf189"
+}
