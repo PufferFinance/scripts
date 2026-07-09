@@ -65,7 +65,8 @@ contract StartRestakingValidators is Script {
             depositDataRoots[i] = vm.parseBytes32(depositData[i].deposit_data_root);
         }
 
-        IInstitutionalVault(institutionalVaultProxy).startRestakingValidators(pubKeys, signatures, amountsInGwei, depositDataRoots);
+        IInstitutionalVault(institutionalVaultProxy)
+            .startRestakingValidators(pubKeys, signatures, amountsInGwei, depositDataRoots);
 
         vm.stopBroadcast();
     }

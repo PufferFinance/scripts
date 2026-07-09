@@ -1,0 +1,10 @@
+[
+    {
+        "delegatedTo": "0x57b6FdEF3A23B81547df68F44e5524b987755c99",
+        "nonce": 0,
+        "scaledShares": 1000000000000000000,
+        "staker": "0x205A6BCF458a40E1a30a000166c793Ec54b0d9D5",
+        "startBlock": 3151116,
+        "withdrawer": "0x205A6BCF458a40E1a30a000166c793Ec54b0d9D5"
+    }
+]

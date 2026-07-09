@@ -154,4 +154,28 @@ interface IInstitutionalVault {
      * @return The number of non restaked validators
      */
     function getNonRestakedValidatorETH() external view returns (uint256);
+
+    /**
+     * @notice Withdraw the ETH from the non restaking validators and atomically updates the accounting
+     */
+    function withdrawNonRestakedETH() external;
+
+    /**
+     * @notice Set the number of restaked and non restaked validators
+     * @param restakedValidatorsETH The amount of ETH in restaked validators
+     * @param nonRestakedValidatorsETH The amount of ETH in non restaked validators
+     */
+    function setValidatorsETH(uint128 restakedValidatorsETH, uint128 nonRestakedValidatorsETH) external;
+
+    /**
+     * @notice Get the withdrawal credentials for the restaking validators (EigenPod)
+     * @return The withdrawal credentials
+     */
+    function getEigenPodWithdrawalCredentials() external view returns (bytes memory);
+
+    /**
+     * @notice Get the address of the no restaking withdrawal credentials contract
+     * @return The address of the no restaking withdrawal credentials
+     */
+    function getNoRestakingWithdrawalCredentials() external view returns (address);
 }
