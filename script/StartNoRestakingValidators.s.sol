@@ -43,7 +43,8 @@ contract StartNoRestakingValidators is Script {
         vm.startBroadcast();
 
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/validator_deposit_data/non_restaking_validators/", depositFileName, ".json");
+        string memory path =
+            string.concat(root, "/validator_deposit_data/non_restaking_validators/", depositFileName, ".json");
 
         console.log("Path:", path);
 
@@ -64,8 +65,9 @@ contract StartNoRestakingValidators is Script {
             depositDataRoots[i] = vm.parseBytes32(depositData[i].deposit_data_root);
         }
 
-        IInstitutionalVault(institutionalVaultProxy)
-            .startNonRestakingValidators(pubKeys, signatures, amountsInGwei, depositDataRoots);
+        IInstitutionalVault(institutionalVaultProxy).startNonRestakingValidators(
+            pubKeys, signatures, amountsInGwei, depositDataRoots
+        );
 
         vm.stopBroadcast();
     }

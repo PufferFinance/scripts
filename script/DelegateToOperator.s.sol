@@ -17,7 +17,8 @@ contract DelegateToOperator is Script {
 
         // Encode the delegateTo call with an empty approver signature and zero salt
         ISignatureUtils.SignatureWithExpiry memory emptySignature;
-        bytes memory innerCalldata = abi.encodeCall(IDelegationManager.delegateTo, (operatorAddress, emptySignature, bytes32(0)));
+        bytes memory innerCalldata =
+            abi.encodeCall(IDelegationManager.delegateTo, (operatorAddress, emptySignature, bytes32(0)));
 
         console.log("Delegating to operator:", operatorAddress);
         console.log("Via delegation manager:", delegationManagerAddress);
