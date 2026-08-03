@@ -13,3 +13,6 @@ docs/
 # Dotenv file
 .env
 src/interface/.DS_Store
+
+# Filled-in vault init config. Holds live addresses.
+vault-init-config.json

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.0 <0.9.0;
 
+import {FeeRecipient} from "../InstitutionalVaultStorage.sol";
 import {IDelegationManagerTypes} from "./Eigenlayer-Slashing/IDelegationManager.sol";
 
 interface IInstitutionalVault {
@@ -178,4 +179,68 @@ interface IInstitutionalVault {
      * @return The address of the no restaking withdrawal credentials
      */
     function getNoRestakingWithdrawalCredentials() external view returns (address);
+
+    // v3 fee mechanism ====================================================
+
+    /**
+     * @notice Bootstrap the v3 fee mechanism. Deploys the non-restaking withdrawal credentials contract on a
+     *         fresh vault, snapshots the starting total assets, and writes the recipients and both caps.
+     * @dev Runs at most once per vault. The caller must hold the admin role on the vault's AccessManager.
+     *      It must be the first call made against a new vault.
+     * @param initialRecipients The starting fee-recipient list. May be empty.
+     * @param maxAprBps_ The per-report reward allowance in basis points, above 0 and at most 10000.
+     * @param maxTotalFeeBps_ The cap on the sum of recipient bps, above 0 and at most 9900.
+     */
+    function initializerV3(FeeRecipient[] calldata initialRecipients, uint16 maxAprBps_, uint16 maxTotalFeeBps_)
+        external;
+
+    /**
+     * @notice Replace the fee-recipient list in one call.
+     * @dev The sum of bps must be at most the current maxTotalFeeBps.
+     */
+    function setFeeRecipients(FeeRecipient[] calldata recipients) external;
+
+    /**
+     * @notice Update the per-report reward allowance.
+     * @dev Written like a yearly rate, applied per report and scaled by the time since the last one.
+     *      It bounds a single report, not the total across reports.
+     * @param newMax New allowance in basis points, above 0 and at most 10000.
+     */
+    function setMaxAprBps(uint16 newMax) external;
+
+    /**
+     * @notice Update the cap on the sum of recipient bps.
+     * @param newMax New cap in basis points, above 0 and at most 9900. It cannot be set below what the
+     *        current recipients already add up to.
+     */
+    function setMaxTotalFeeBps(uint16 newMax) external;
+
+    /// @notice Get the current fee-recipient list.
+    function getFeeRecipients() external view returns (FeeRecipient[] memory);
+
+    /// @notice Get the total assets recorded at the last oracle report.
+    function getLastTotalAssets() external view returns (uint128);
+
+    /// @notice Get the net deposits minus withdrawals since the last oracle report.
+    function getNetLPFlow() external view returns (int128);
+
+    /// @notice Get the timestamp of the last oracle report.
+    function getLastReportTimestamp() external view returns (uint64);
+
+    /// @notice Get the per-report reward allowance, in basis points.
+    function getMaxAprBps() external view returns (uint16);
+
+    /// @notice Get the cap on the sum of recipient fee bps, in basis points.
+    function getMaxTotalFeeBps() external view returns (uint16);
+
+    // Inherited surface the scripts read =================================
+
+    /// @notice The vault implementation's version string.
+    function VERSION() external view returns (string memory);
+
+    /// @notice The AccessManager that gates the vault's restricted functions.
+    function authority() external view returns (address);
+
+    /// @notice Total shares in issue.
+    function totalSupply() external view returns (uint256);
 }
