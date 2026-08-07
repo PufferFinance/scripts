@@ -44,7 +44,7 @@ import {console} from "forge-std/console.sol";
  */
 contract InitializeV3 is Script {
     /// @dev The version string the vault implementation behind the proxy is expected to report.
-    string internal constant EXPECTED_VAULT_VERSION = "3.0.0";
+    string internal constant EXPECTED_VAULT_VERSION = "3.1.0";
     /// @dev The vault's own hard ceiling on the sum of recipient bps.
     uint16 internal constant HARD_FEE_BPS_CAP = 9_900;
     uint16 internal constant BPS_DENOMINATOR = 10_000;
@@ -241,7 +241,7 @@ contract InitializeV3 is Script {
 
         require(
             keccak256(bytes(vault.VERSION())) == keccak256(bytes(EXPECTED_VAULT_VERSION)),
-            "vault implementation is not v3: check the proxy points at the right implementation"
+            string.concat("vault implementation expected to be: ", EXPECTED_VAULT_VERSION, ", but the vault version is: ", vault.VERSION(), ", need to upgrade the vault implementation")
         );
 
         require(
